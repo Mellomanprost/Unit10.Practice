@@ -4,13 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Unit10.Practice.Task1
+namespace Unit10.Practice.Task2
 {
     class Program
     {
 
+        static ILogger Logger { get; set; }
+
         static void Main(string[] args)
         {
+            Logger = new Logger();
+            var calculator = new Calculator(Logger);
             bool flagForExit = false;
             Console.WriteLine("Программа для суммирования двух чисел.");
             do
@@ -18,19 +22,17 @@ namespace Unit10.Practice.Task1
                 try
                 {
                     Console.WriteLine("Введите первое число: ");
-
                     var a = double.Parse(Console.ReadLine());
-
                     Console.WriteLine("Введите второе число: ");
-
                     var b = double.Parse(Console.ReadLine());
-
-                    Calculator calculator = new Calculator();
                     Console.WriteLine("{0} + {1} = {2}", a, b, calculator.Calculate(a, b));
+                    Logger.DefaultSettings();
                 }
                 catch (Exception exception)
                 {
+                    Logger.Error("Ошибка!");
                     Console.WriteLine(exception.Message);
+                    Logger.DefaultSettings();
                 }
                 finally
                 {
@@ -42,23 +44,6 @@ namespace Unit10.Practice.Task1
                     }
                 }
             } while (!flagForExit);
-
-
         }
-    }
-
-    public interface ICalculator
-    {
-        double Calculate(double x, double y);
-    }
-
-    public class Calculator : ICalculator
-    {
-
-        public double Calculate(double x, double y)
-        {
-            return x + y;
-        }
-
     }
 }
